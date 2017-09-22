@@ -1,12 +1,21 @@
 # GoatseCoin
 Goatse is a blockchain-based incentivized meme generation platform where users cast votes on their favorite memes of the day and the winner and 10 random voters receive prizes. Users can both propose a new meme and vote from the token contract. They enter in a string with their vote which is tied to an entry, that entry's vote count is increased by the number of votes they submitted, and the voter is added to the list of voters on that meme (so random voters weighted by votes submitted can be found later). A user can cast as many votes as they have GoatseCoins; the number of coins voted with are then frozen until the end of the current voting period. Once 24 hours of voting has passed, anyone can call the finish period function which finds and rewards the winning meme and the random voter winners--this caller receives 1,000 Goatse for paying the gas of this function. Rinse and repeat.
-GoatseCoin is primarily two contracts:
-1. GoatseCoin.sol: The ERC20 token contract. The difference between this and any default token is that users are given the ability to propose and vote on GoatseDAO memes (to allow user all control from on contract) and users have a balance and a frozen balance, which is used to temporarily lock funds that have been voted with. <b>The owner of this contract has the ability to mint coins at will (as it can change the DAO); users must be given the ability to control the token quickly so us malicious owners cannot take advantage of this!</b>
-2. GoatseDAO.sol: This contract holds the core of the voting system. Users will first propose a meme, it will be voted on, then--at the end of the voting period--the meme with the most votes will be declared winner and that as well as 10 random voters will receive prizes. The main functions on the DAO can only be called from the token so as to consolidate all use in one contract. The DAO can be changed out at will by the owner of the token but, as stated above,  this means the owner can essentially mint coins at will, so the DAO (or token) must soon be given a function for the users to be able to be the owner of the contract in a PoS manner.
-Future contracts that will be made public at least 1 week before ICO:
-3. Crowdsale.sol: Straightforward crowdsale contract.
-4. Holder.sol: Locks founder tokens in a contract for 1 year. The crowdsale contract gives all founder and advisor GoatseCoins to this address, then whoever launched Holder.sol can assign addresses and percent of team tokens to team members who can then withdraw 1 year after the crowdsale ended.
-5. MultiSig Wallet: Consensys multisig that we will likely use for receiving crowdsale funds.
 
-Bug Bounty!
+GoatseCoin is primarily two contracts:
+<h1>1. GoatseCoin.sol:</h1> 
+The ERC20 token contract. The difference between this and any default token is that users are given the ability to propose and vote on GoatseDAO memes (to allow user all control from on contract) and users have a balance and a frozen balance, which is used to temporarily lock funds that have been voted with. <b>The owner of this contract has the ability to mint coins at will (as it can change the DAO); users must be given the ability to control the token quickly so us malicious owners cannot take advantage of this!</b>
+
+<h1>2. GoatseDAO.sol:</h1> 
+This contract holds the core of the voting system. Users will first propose a meme, it will be voted on, then--at the end of the voting period--the meme with the most votes will be declared winner and that as well as 10 random voters will receive prizes. The main functions on the DAO can only be called from the token so as to consolidate all use in one contract. The DAO can be changed out at will by the owner of the token but, as stated above,  this means the owner can essentially mint coins at will, so the DAO (or token) must soon be given a function for the users to be able to be the owner of the contract in a PoS manner.
+
+Future contracts that will be made public at least 1 week before ICO:
+<h1>3. Crowdsale.sol:</h1>
+Straightforward crowdsale contract.
+<h1>4. Holder.sol:</h1> 
+Locks founder tokens in a contract for 1 year. The crowdsale contract gives all founder and advisor GoatseCoins to this address, then whoever launched Holder.sol can assign addresses and percent of team tokens to team members who can then withdraw 1 year after the crowdsale ended.
+<h1>5. MultiSig Wallet:</h1> 
+Consensys multisig that we will likely use for receiving crowdsale funds.
+
+<h1>Bug Bounty</h1>
+
 We take security seriously so please  go over our contracts and report any findings to GoatseSeal@goatse.cx. We don't just care about disastrous bugs like many other ICOs; report non-asserted sends, functions acting differently than claimed, even efficiency errors, or even suggestions. We'll be judging all reports on a case-by-case basis and will reward reporters a generous amount of GoatseCoins (2% of coins are reserved for bug bounty participants).
