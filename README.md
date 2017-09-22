@@ -1,4 +1,4 @@
-# GoatseCoin
+# <u>GoatseCoin</u>
 Goatse is a blockchain-based incentivized meme generation platform where users cast votes on their favorite memes of the day and the winner and 10 random voters receive prizes. Users can both propose a new meme and vote from the token contract. They enter in a string with their vote which is tied to an entry, that entry's vote count is increased by the number of votes they submitted, and the voter is added to the list of voters on that meme (so random voters weighted by votes submitted can be found later). A user can cast as many votes as they have GoatseCoins; the number of coins voted with are then frozen until the end of the current voting period. Once 24 hours of voting has passed, anyone can call the finish period function which finds and rewards the winning meme and the random voter winners--this caller receives 1,000 Goatse for paying the gas of this function. Rinse and repeat.
 
 
