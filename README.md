@@ -1,6 +1,7 @@
 # GoatseCoin
 Goatse is a blockchain-based incentivized meme generation platform where users cast votes on their favorite memes of the day and the winner and 10 random voters receive prizes. Users can both propose a new meme and vote from the token contract. They enter in a string with their vote which is tied to an entry, that entry's vote count is increased by the number of votes they submitted, and the voter is added to the list of voters on that meme (so random voters weighted by votes submitted can be found later). A user can cast as many votes as they have GoatseCoins; the number of coins voted with are then frozen until the end of the current voting period. Once 24 hours of voting has passed, anyone can call the finish period function which finds and rewards the winning meme and the random voter winners--this caller receives 1,000 Goatse for paying the gas of this function. Rinse and repeat.
 
+
 <h1>Contracts:</h1>
 <h2>1. GoatseCoin.sol:</h2> 
 The ERC20 token contract. The difference between this and any default token is that users are given the ability to propose and vote on GoatseDAO memes (to allow user all control from on contract) and users have a balance and a frozen balance, which is used to temporarily lock funds that have been voted with. <b>The owner of this contract has the ability to mint coins at will (as it can change the DAO); users must be given the ability to control the token quickly so us malicious owners cannot take advantage of this!</b>
@@ -14,6 +15,7 @@ Straightforward crowdsale contract.
 Locks founder tokens in a contract for 1 year. The crowdsale contract gives all founder and advisor GoatseCoins to this address, then whoever launched Holder.sol can assign addresses and percent of team tokens to team members who can then withdraw 1 year after the crowdsale ended.
 <h2>5. MultiSig Wallet:</h2> 
 Consensys multisig that we will likely use for receiving crowdsale funds.
+
 
 <h1>Bug Bounty:</h1>
 
