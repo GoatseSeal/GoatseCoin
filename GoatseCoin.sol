@@ -41,7 +41,7 @@ contract GoatseCoin {
     event Freeze(address indexed _from, uint256 indexed _value, uint256 indexed _period);
     event Approval(address indexed _owner, address indexed _spender, uint256 indexed _value);
 
-    /* Owner is only used to change address of DAO */
+    /* Owner is only used to change address of Dapp */
     /* After alpha Dapp will become owner */
     function GoatseCoin() {
         owner = msg.sender;
