@@ -4,10 +4,10 @@ Goatse is a blockchain-based incentivized meme generation platform where users c
 
 <h1>Contracts:</h1>
 <h2>1. GoatseCoin.sol:</h2> 
-The ERC20 token contract. The difference between this and any default token is that users are given the ability to propose and vote on GoatseDAO memes (to allow user all control from on contract) and users have a balance and a frozen balance, which is used to temporarily lock funds that have been voted with. <b>The owner of this contract has the ability to mint coins at will (as it can change the DAO); users must be given the ability to control the token quickly so us malicious owners cannot take advantage of this!</b>
+The ERC20 token contract. The difference between this and any default token is that users are given the ability to propose and vote on GoatseDapp memes (to allow user all control from on contract) and users have a balance and a frozen balance, which is used to temporarily lock funds that have been voted with. <b>The owner of this contract has the ability to mint coins at will (as it can change the minter); users must be given the ability to control the token quickly so us malicious owners cannot take advantage of this!</b>
 
-<h2>2. GoatseDAO.sol:</h2> 
-This contract holds the core of the voting system. Users will first propose a meme, it will be voted on, then--at the end of the voting period--the meme with the most votes will be declared winner and that as well as 10 random voters will receive prizes. The main functions on the DAO can only be called from the token so as to consolidate all use in one contract. The DAO can be changed out at will by the owner of the token but, as stated above,  this means the owner can essentially mint coins at will, so the DAO (or token) must soon be given a function for the users to be able to be the owner of the contract in a PoS manner.
+<h2>2. GoatseDapp.sol:</h2> 
+This contract holds the core of the voting system. Users will first propose a meme, it will be voted on, then--at the end of the voting period--the meme with the most votes will be declared winner and that as well as 10 random voters will receive prizes. The main functions on the Dapp can only be called from the token so as to consolidate all use in one contract. The Dapp can be changed out at will by the owner of the token but, as stated above,  this means the owner can essentially mint coins at will, so the Dapp (or token) must soon be given a function for the users to be able to be the owner of the contract in a PoS manner.
 
 <h2>3. Crowdsale.sol:</h2>
 Straightforward crowdsale contract.
