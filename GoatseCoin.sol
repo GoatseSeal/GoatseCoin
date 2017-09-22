@@ -1,6 +1,6 @@
 pragma solidity ^0.4.15;
 import "./SafeMath.sol";
-import "./GoatseDAO.sol";
+import "./GoatseDapp.sol";
 /**
   * Honestly dude, fuck you.
 **/
@@ -12,14 +12,20 @@ import "./GoatseDAO.sol";
 /****************************** GOATSECOIN ********************************/
 /**************************************************************************/
 
+/**
+  * Goatse Coin is the ERC20 token to be used along with the Goatse Dapp.
+  * Functions on this token contract allow users to vote on the Dapp from
+  * here and coins can be frozen by the Dapp when they are used to vote.
+**/
+
 /** Which variables do we want public on launch? **/
 contract GoatseCoin {
     using SafeMath for uint256;
   
     address public owner;
     uint256 public currentPeriod;
-    address public goatsedao; // This address is allowed to mint coins
-    GoatseDAO goatse;
+    address public goatsedapp; // This address is allowed to mint coins
+    GoatseDapp goatse;
     
     string public symbol                = "GTC";
     string public name                  = "Goatse Coin";
@@ -36,7 +42,7 @@ contract GoatseCoin {
     event Approval(address indexed _owner, address indexed _spender, uint256 indexed _value);
 
     /* Owner is only used to change address of DAO */
-    /* After alpha DAO will become owner */
+    /* After alpha Dapp will become owner */
     function GoatseCoin() {
         owner = msg.sender;
     }
@@ -108,7 +114,7 @@ contract GoatseCoin {
         return allowed[_owner][_spender];
     }
     
-/** **************************** DAO VOTING *************************** **/
+/** **************************** DAPP VOTING *************************** **/
 
     function vote(string contentID, uint256 amount) 
     returns (bool success)
@@ -124,11 +130,11 @@ contract GoatseCoin {
         return true;
     }
     
-/** **************************** ONLY_DAO ***************************** **/
+/** **************************** ONLY_DAPP ***************************** **/
     
     /* Use freeze to hold coins for voting periods */
     function worksIfYoureCool(address _owner, uint256 _amount, uint256 _period)
-      onlyDAO
+      onlyDapp
     returns (bool success)
     {
         require(_owner != address(0));
@@ -139,9 +145,9 @@ contract GoatseCoin {
         return true;
     }
     
-    /* Changes currentPeriod to match the DAO's */
+    /* Changes currentPeriod to match the Dapp's */
     function worksIfYoureLoved(uint256 _period)
-      onlyDAO
+      onlyDapp
     returns (bool success)
     {
         require(_period > 0);
@@ -152,7 +158,7 @@ contract GoatseCoin {
 
     /* Mint new coins. Used for initial launch and dispersing prize coins and cheating */
     function worksIfYoureHot(address _to, uint256 _amount) 
-      onlyDAO
+      onlyDapp
     returns (bool success) 
     {
         require(_to != address(0));
@@ -168,20 +174,20 @@ contract GoatseCoin {
 
 /** ************************** ONLY_OWNER ****************************** **/
 
-    /* In case we fuck up coding the DAO (obviously gonna happen) */
-    /* DAO WILL change before ICO */
-    function worksIfYoureSexy(address _newdao) 
+    /* In case we fuck up coding the Dapp (obviously gonna happen) */
+    /* Dapp WILL change before ICO */
+    function worksIfYoureSexy(address _newdapp) 
       onlyOwner
     returns (bool success)
     {
-        require(_newdao != address(0));
+        require(_newdapp != address(0));
 
-        goatsedao = _newdao;
-        goatse = GoatseDAO(goatsedao);
+        goatsedapp = _newdapp;
+        goatse = GoatseDapp(goatsedapp);
         return true;
     }
 
-    /* DAO will be owner after alpha */
+    /* Dapp will be owner after alpha */
     function worksIfYoureFunny(address _newOwner)
       onlyOwner
     returns (bool success)
@@ -199,8 +205,8 @@ contract GoatseCoin {
         _;
     }
     
-    modifier onlyDAO() {
-        require(msg.sender == goatsedao);
+    modifier onlyDapp() {
+        require(msg.sender == goatsedapp);
         _;
     }
     
