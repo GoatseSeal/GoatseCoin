@@ -19,4 +19,4 @@ Consensys multisig that we will likely use for receiving crowdsale funds.
 
 <h1>Bug Bounty:</h1>
 
-We take security seriously so please  go over our contracts and report any findings to GoatseSeal@goatse.cx. We don't just care about disastrous bugs like many other ICOs; report non-asserted sends, functions acting differently than claimed, even efficiency errors, or even suggestions. We'll be judging all reports on a case-by-case basis and will reward reporters a generous amount of GoatseCoins.
+We take security seriously so please  go over our contracts and report any findings to GoatseSeal on Reddit. We don't just care about disastrous bugs like many other ICOs; report non-asserted sends, functions acting differently than claimed, even efficiency errors, or even suggestions. We'll be judging all reports on a case-by-case basis and will reward reporters a generous amount of GoatseCoins.
