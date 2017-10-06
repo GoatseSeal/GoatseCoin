@@ -69,10 +69,9 @@ contract GoatseDapp {
       onlyToken
     returns (bool success)
     {
-        require(now <= lastPeriod + 1 days);
         require(entries[_contentID].creatorAddress == 0);
         require(pastEntries[_contentID].creatorAddress == 0);
-        require(proposalsToday < 500); // get it while it's hot
+        require(proposalsToday <= 300); // get it while it's hot
 
         entries[_contentID].creatorAddress = _creatorAddress;
         entries[_contentID].nameOfEntry = _contentID;
