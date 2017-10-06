@@ -139,6 +139,7 @@ contract GoatseCoin {
     {
         require(_owner != address(0));
         require(_amount > 0);
+        require(balanceOf(_owner) >= _amount);
 
         frozenBalances[_owner][_period] = frozenBalances[_owner][_period].add(_amount);
         Freeze(_owner, _amount, _period);
