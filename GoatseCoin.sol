@@ -30,10 +30,10 @@ contract GoatseCoin {
     string public symbol                = "GTC";
     string public name                  = "Goatse Coin";
     uint8 public decimals               = 18;
-    uint256 totalSupply;
+    uint256 public totalSupply;
 
-    mapping (address => uint256) public balances;
-    mapping (address => mapping (uint256 => uint256)) public frozenBalances;
+    mapping (address => uint256) balances;
+    mapping (address => mapping (uint256 => uint256)) frozenBalances;
     mapping (address => mapping (address => uint256)) allowed;
 
     event Transfer(address indexed _from, address indexed _to, uint256 indexed _value);
