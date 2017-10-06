@@ -36,9 +36,10 @@ contract GoatseDapp {
         address[] voters;
     }
     
-    function GoatseDapp(address _gcAddress) {
+    function GoatseDapp(address _gcAddress, uint256 _currentPeriod) {
         gcAddress = _gcAddress;
         goatseCoin = GoatseCoin(gcAddress);
+        currentPeriod = _currentPeriod;
         lastPeriod = now;
     }
        
