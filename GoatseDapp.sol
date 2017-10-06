@@ -15,9 +15,10 @@ import "./GoatseCoin.sol";
 
 /* Voting contract for the best OC created today */
 contract GoatseDapp {
-    uint256 proposalsToday;                         // How many proposals have there been today
-    uint256 lastPeriod;                             // Time at which last voting period began
-    uint256 currentPeriod;                          // How many periods have there been over the lifespan of GC?
+    uint256 public proposalsToday;                  // How many proposals have there been today
+    uint256 public lastPeriod;                      // Time at which last voting period began
+    uint256 public periodEnd;                       // At what second the current period ends
+    uint256 public currentPeriod;                   // How many periods have there been over the lifespan of GC?
     address public gcAddress;                       // Address of the GoatseCoin
 
     GoatseCoin goatseCoin;      
@@ -107,6 +108,7 @@ contract GoatseDapp {
         
         proposalsToday = 0;
         lastPeriod = now;
+        periodEnd = lastPeriod + 1 days;
         return true;
     }
     
