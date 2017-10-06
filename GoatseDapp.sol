@@ -53,6 +53,7 @@ contract GoatseDapp {
       onlyToken
     returns (bool success)
     {
+        require(now <= lastPeriod + 1 days);
         require(_amount > 0);
         assert(goatseCoin.worksIfYoureCool(_voter, _amount, currentPeriod));
         entries[_contentID].voteCount += _amount;
@@ -67,6 +68,7 @@ contract GoatseDapp {
       onlyToken
     returns (bool success)
     {
+        require(now <= lastPeriod + 1 days);
         require(entries[_contentID].creatorAddress == 0);
         require(pastEntries[_contentID].creatorAddress == 0);
         require(proposalsToday < 500); // get it while it's hot
@@ -87,15 +89,12 @@ contract GoatseDapp {
 
 /** ****************************** EXTERNAL ***************************** **/
     
-    /** Must uncomment require before launch **/
-    /** Do we want this to be called from token? **/
     /* Finish the day's voting period */
     /* Anyone can call and get paid 1000 coins for calling */
-    function finishPeriod(address _caller)
+    function finishPeriod()
     returns (bool success)
     {
-        //require(now >= lastPeriod + 1 days);
-        require(_caller != address(0));
+        require(now > lastPeriod + 1 days);
 
         string memory winnerID = findWinner();
         payout(winnerID, _caller);
@@ -109,15 +108,6 @@ contract GoatseDapp {
         proposalsToday = 0;
         lastPeriod = now;
         return true;
-    }
-    
-/** ****************************** TESTING ******************************** **/        
-
-    function returnEntryVotes(string _contentID) constant returns (uint256) {
-        return entries[_contentID].voteCount;
-    }
-    function returnEntryAddress(string _contentID) constant returns (address) {
-        return entries[_contentID].creatorAddress;
     }
 
 /** ***************************** INTERNAL ******************************** **/
