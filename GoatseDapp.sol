@@ -42,6 +42,7 @@ contract GoatseDapp {
         goatseCoin = GoatseCoin(gcAddress);
         currentPeriod = goatseCoin.currentPeriod();
         lastPeriod = now;
+        periodEnd = lastPeriod + 1 days;
     }
        
     function () { revert(); }
