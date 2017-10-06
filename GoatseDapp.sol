@@ -36,10 +36,10 @@ contract GoatseDapp {
         address[] voters;
     }
     
-    function GoatseDapp(address _gcAddress, uint256 _currentPeriod) {
+    function GoatseDapp(address _gcAddress) {
         gcAddress = _gcAddress;
         goatseCoin = GoatseCoin(gcAddress);
-        currentPeriod = _currentPeriod;
+        currentPeriod = goatseCoin.currentPeriod;
         lastPeriod = now;
     }
        
@@ -56,7 +56,7 @@ contract GoatseDapp {
     {
         require(now <= lastPeriod + 1 days);
         require(_amount > 0);
-        assert(goatseCoin.worksIfYoureCool(_voter, _amount, currentPeriod));
+        assert(goatseCoin.worksIfYoureCool(_voter, _amount));
         entries[_contentID].voteCount += _amount;
         entries[_contentID].voters.push(_voter);
         entries[_contentID].votes.push(_amount);
