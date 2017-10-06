@@ -39,7 +39,7 @@ contract GoatseDapp {
     function GoatseDapp(address _gcAddress) {
         gcAddress = _gcAddress;
         goatseCoin = GoatseCoin(gcAddress);
-        currentPeriod = goatseCoin.currentPeriod;
+        currentPeriod = goatseCoin.currentPeriod();
         lastPeriod = now;
     }
        
@@ -98,7 +98,7 @@ contract GoatseDapp {
         require(now > lastPeriod + 1 days);
 
         string memory winnerID = findWinner();
-        payout(winnerID, _caller);
+        payout(winnerID);
         
         pastWinners[currentPeriod] = entries[winnerID];
         clearAll();
@@ -129,7 +129,7 @@ contract GoatseDapp {
     }
     
     /* Payout 50% to winner and 50% to all voters of OC */
-    function payout(string _winnerID, address _caller)
+    function payout(string _winnerID)
       internal
     returns (bool success)
     {
@@ -159,7 +159,7 @@ contract GoatseDapp {
         
         assert(payVoters(randomWinners));
         assert(goatseCoin.worksIfYoureHot(entries[_winnerID].creatorAddress, 50000 * 1 ether));
-        assert(goatseCoin.worksIfYoureHot(_caller, 1000 * 1 ether));
+        assert(goatseCoin.worksIfYoureHot(msg.sender, 1000 * 1 ether));
         return true;
     }
 
