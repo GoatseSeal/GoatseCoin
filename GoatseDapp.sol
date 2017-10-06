@@ -110,6 +110,13 @@ contract GoatseDapp {
         lastPeriod = now;
         return true;
     }
+    
+    function getVotes(string _entryID)
+      constant
+    returns (uint256 votes)
+    {
+        return entries[_entryID].voteCount;
+    }
 
 /** ***************************** INTERNAL ******************************** **/
     
