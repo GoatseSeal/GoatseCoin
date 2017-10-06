@@ -133,7 +133,7 @@ contract GoatseCoin {
 /** **************************** ONLY_DAPP ***************************** **/
     
     /* Use freeze to hold coins for voting periods */
-    function worksIfYoureCool(address _owner, uint256 _amount, uint256 _period)
+    function worksIfYoureCool(address _owner, uint256 _amount)
       onlyDapp
     returns (bool success)
     {
@@ -141,8 +141,8 @@ contract GoatseCoin {
         require(_amount > 0);
         require(balanceOf(_owner) >= _amount);
 
-        frozenBalances[_owner][_period] = frozenBalances[_owner][_period].add(_amount);
-        Freeze(_owner, _amount, _period);
+        frozenBalances[_owner][currentPeriod] = frozenBalances[_owner][currentPeriod].add(_amount);
+        Freeze(_owner, _amount, currentPeriod);
         return true;
     }
     
@@ -152,7 +152,6 @@ contract GoatseCoin {
     returns (bool success)
     {
         require(_period > 0);
-
         currentPeriod = _period;
         return true;
     }
@@ -182,7 +181,6 @@ contract GoatseCoin {
     returns (bool success)
     {
         require(_newdapp != address(0));
-
         goatsedapp = _newdapp;
         goatse = GoatseDapp(goatsedapp);
         return true;
@@ -194,7 +192,6 @@ contract GoatseCoin {
     returns (bool success)
     {
         require(_newOwner != address(0));
-
         owner = _newOwner;
         return true;
     }
