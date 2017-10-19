@@ -14,23 +14,27 @@ contract Giveaway {
     
     mapping (address => bool) receivers;
     
-    function Giveaway(address _tokenAddress) 
+    function Giveaway() 
     {
-        token = Token(_tokenAddress);
+        token = Token(0x71d271f8b14adef568f8f28f1587ce7271ac4ca5);
         owner = msg.sender;
     }
     
     function ()
       payable
+      external
     {
         require(!receivers[msg.sender]);
         assert(token.transfer(msg.sender, 1000 * 1 ether));
+        receivers[msg.sender] = true;
     }
     
     function withdraw(uint256 _value)
       external
+    returns (bool success)
     {
         require(msg.sender == owner);
         assert(token.transfer(owner, _value * 1 ether));
+        return true;
     }
 }
