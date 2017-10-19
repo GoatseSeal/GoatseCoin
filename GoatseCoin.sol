@@ -33,13 +33,20 @@ contract GoatseCoin {
     uint256 public totalSupply;
 
     mapping (address => uint256) balances;
-    mapping (address => mapping (uint256 => uint256)) frozenBalances;
+    mapping (address => frozenBalance) frozenBalances;
     mapping (address => mapping (address => uint256)) allowed;
 
     event Transfer(address indexed _from, address indexed _to, uint256 indexed _value);
     event Mint(address indexed _to, uint256 indexed _value);
     event Freeze(address indexed _from, uint256 indexed _value, uint256 indexed _period);
     event Approval(address indexed _owner, address indexed _spender, uint256 indexed _value);
+
+    /* Struct here is used to keep track of frozen balances */
+    struct frozenBalance 
+    {
+        uint256 frozenAmount;
+        uint256 frozenPeriod;
+    }
 
     /* Owner is only used to change address of Dapp */
     /* After alpha Dapp will become owner */
@@ -72,7 +79,11 @@ contract GoatseCoin {
       constant 
     returns (uint256 balance) 
     {
-        return balances[_owner].sub(frozenBalances[_owner][currentPeriod]);
+        if (frozenBalances[_owner].frozenPeriod == currentPeriod) {
+            return balances[_owner].sub(frozenBalances[_owner].frozenAmount);
+        } else {
+            return balances[_owner];
+        }
     }
     
     /* Yep fuckin transferfrom or whatever fuck this who even uses it */
@@ -141,7 +152,12 @@ contract GoatseCoin {
         require(_amount > 0);
         require(balanceOf(_owner) >= _amount);
 
-        frozenBalances[_owner][currentPeriod] = frozenBalances[_owner][currentPeriod].add(_amount);
+        if (frozenBalances[_owner].frozenPeriod == currentPeriod) {
+            frozenBalances[_owner].frozenAmount += _amount;
+        } else {
+            frozenBalances[_owner].frozenPeriod = currentPeriod;
+            frozenBalances[_owner].frozenAmount = _amount;
+        }
         Freeze(_owner, _amount, currentPeriod);
         return true;
     }
