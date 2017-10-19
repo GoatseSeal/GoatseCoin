@@ -17,7 +17,7 @@ contract Giveaway {
     function Giveaway() 
     {
         // Hard...code...ehehehehe
-        token = Token(0xb362c3730C249c83c9C5A91e8e9fa8f3CCa4c064);
+        token = Token(0x2ee13cbd304712b9ea95963009a845a61a6dbe32);
         owner = msg.sender;
     }
     
