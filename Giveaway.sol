@@ -10,12 +10,14 @@ pragma solidity ^0.4.18;
 contract Token { function transfer(address _to, uint256 _value) returns (bool); }
 contract Giveaway {
     Token token;
+    address owner;
     
     mapping (address => bool) receivers;
     
     function Giveaway(address _tokenAddress) 
     {
         token = Token(_tokenAddress);
+        owner = msg.sender;
     }
     
     function ()
@@ -23,5 +25,12 @@ contract Giveaway {
     {
         require(!receivers[msg.sender]);
         assert(token.transfer(msg.sender, 1000 * 1 ether));
+    }
+    
+    function withdraw(uint256 _value)
+      external
+    {
+        require(msg.sender == owner);
+        assert(token.transfer(owner, _value * 1 ether));
     }
 }
