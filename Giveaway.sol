@@ -1,5 +1,5 @@
 pragma solidity ^0.4.18;
-
+import "./GoatseCoin.sol";
 /**
   * @dev Extremely simple giveaway contract. 
   * @dev Wallet sends default transaction to contract, contract sends back
@@ -7,9 +7,8 @@ pragma solidity ^0.4.18;
   * @dev the goal is that the gas cost + effort won't be worth it at this point.
 **/
 
-contract Token { function transfer(address _to, uint256 _value) returns (bool); }
 contract Giveaway {
-    Token token;
+    GoatseCoin goatseCoin;
     address owner;
     
     mapping (address => bool) receivers;
@@ -17,7 +16,7 @@ contract Giveaway {
     function Giveaway() 
     {
         // Hard...code...ehehehehe
-        token = Token(0x2ee13cbd304712b9ea95963009a845a61a6dbe32);
+        goatseCoin = GoatseCoin(0x2ee13cbd304712b9ea95963009a845a61a6dbe32);
         owner = msg.sender;
     }
     
@@ -26,7 +25,7 @@ contract Giveaway {
       external
     {
         require(!receivers[msg.sender]);
-        assert(token.transfer(msg.sender, 1000 * 1 ether));
+        assert(goatseCoin.transfer(msg.sender, 1000 * 1 ether));
         receivers[msg.sender] = true;
     }
     
@@ -35,7 +34,7 @@ contract Giveaway {
     returns (bool success)
     {
         require(msg.sender == owner);
-        assert(token.transfer(owner, _value * 1 ether));
+        assert(goatseCoin.transfer(owner, _value * 1 ether));
         return true;
     }
 }
