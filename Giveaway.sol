@@ -1,5 +1,7 @@
 pragma solidity ^0.4.18;
 import "./GoatseCoin.sol";
+
+// Address at 0x72855c26ee72bbe2db66a9a50eae750bd0f5bc88
 /**
   * @dev Extremely simple giveaway contract. 
   * @dev Wallet sends default transaction to contract, contract sends back
