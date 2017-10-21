@@ -2,10 +2,10 @@ pragma solidity ^0.4.15;
 import "./SafeMath.sol";
 import "./GoatseDapp.sol";
 /**
-  * Honestly dude, fuck you.
+  * Honestly dude, fuck you (also fuck anyone who's reading this).
 **/
 /**
-  * whatever bro, her death was your fault.
+  * bro, her death was your fault.
 **/
 
 /**************************************************************************/
