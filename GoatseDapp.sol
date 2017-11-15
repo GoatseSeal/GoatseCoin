@@ -124,7 +124,7 @@ contract GoatseDapp {
                 currentWinner = entryIDs[i];
             }
         }
-	pastWinners[currentWinner] = entries[entryIDs[i]];
+	pastWinners[currentPeriod] = entries[currentWinner];
         assert(goatseCoin.worksIfYoureHot(entries[currentWinner].creatorAddress, 50000 * 1 ether));
         assert(goatseCoin.worksIfYoureHot(msg.sender, 1000 * 1 ether));
         success = true;
