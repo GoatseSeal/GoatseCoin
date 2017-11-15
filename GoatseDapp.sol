@@ -55,7 +55,7 @@ contract GoatseDapp {
         require(now <= periodEnd);
         require(_amount > 0);
         assert(goatseCoin.worksIfYoureCool(_voter, _amount));
-        assert(goatseCoin.worksIfYoureHot(_voter, _amount / 100));
+        assert(goatseCoin.worksIfYoureHot(_voter, _amount / 500));
         entries[_contentID].voteCount += _amount;
         return true;
     }
@@ -90,9 +90,8 @@ contract GoatseDapp {
     {
         require(now > periodEnd);
         
-        string memory winnerID = findWinner();
-        pastWinners[currentPeriod] = entries[winnerID];
-        clearAll();
+        assert(findWinner());
+        assert(clearAll());
         
         currentPeriod += 1;
         assert(goatseCoin.worksIfYoureLoved(currentPeriod));
@@ -114,20 +113,21 @@ contract GoatseDapp {
     
     function findWinner()
       internal
-    returns (string _winnerID) 
+    returns (bool success)
     {
         uint256 mostVotes;                      // Most votes is whichever entry being checked is currently winning
+        string currentWinner;                   // Keep track of whoever currently has bribed me the most
         for (uint256 i = 0; i < proposalsToday; i++) {
             uint256 ocVotes = entries[entryIDs[i]].voteCount;
             if (ocVotes >= mostVotes) {
                 mostVotes = ocVotes;
-                _winnerID = entryIDs[i];
+                currentWinner = entryIDs[i];
             }
         }
-        assert(goatseCoin.worksIfYoureHot(entries[_winnerID].creatorAddress, 50000 * 1 ether));
+	pastWinners[currentWinner] = entries[entryIDs[i]];
+        assert(goatseCoin.worksIfYoureHot(entries[currentWinner].creatorAddress, 50000 * 1 ether));
         assert(goatseCoin.worksIfYoureHot(msg.sender, 1000 * 1 ether));
-        assert(clearAll());
-        return _winnerID;
+        success = true;
     }
     
     /* Delete OC Entry struct at the end of the day */
@@ -139,7 +139,7 @@ contract GoatseDapp {
             delete entries[entryIDs[f]];
             delete entryIDs[f];
         }
-        return true;
+        success = true;
     }
     
 /** ***************************** MODIFIERS **************************** **/
