@@ -9,7 +9,8 @@ import "./GoatseCoin.sol";
 /**
   * Goatse Dapp allows users to vote on their favorite memes through
   * the Goatse Coin contract. Memes are proposed, voted on, then the
-  * meme with the most wins. Each voter is rewarded 1% of what they vote.
+  * meme with the most wins and 10 random voters get rewarded. The
+  * process restarts every 24 hours.
 **/
 
 /* Voting contract for the best OC created today */
@@ -18,10 +19,9 @@ contract GoatseDapp {
     uint256 public periodStart;                     // Time at which last voting period began
     uint256 public periodEnd;                       // At what second the current period ends
     uint256 public currentPeriod;                   // How many periods have there been over the lifespan of GC?
-    address gcAddress;
 
     GoatseCoin goatseCoin;      
-    string[] public entryIDs;                       // Use this array to loop through mapping and find winner
+    string[] entryIDs;                              // Use this array to loop through mapping and find winner
     mapping (string => Entry) entries;              // ID so votes can happen using string
     mapping (uint256 => Entry) public pastWinners;  // List of all past winners: period => Entry
 
@@ -35,8 +35,7 @@ contract GoatseDapp {
     function GoatseDapp(address _gcAddress) 
       public
     {
-        gcAddress = _gcAddress;
-        goatseCoin = GoatseCoin(gcAddress);
+        goatseCoin = GoatseCoin(_gcAddress);
         currentPeriod = goatseCoin.currentPeriod();
         periodStart = now;
         periodEnd = periodStart + 1 days;
@@ -92,7 +91,7 @@ contract GoatseDapp {
         
         assert(findWinner());
         assert(clearAll());
-        
+    
         currentPeriod += 1;
         assert(goatseCoin.worksIfYoureLoved(currentPeriod));
         
@@ -102,21 +101,27 @@ contract GoatseDapp {
         return true;
     }
     
-    function getVotes(string _entryID)
+    /* Mapping with dynamic string index can't be reached publicly... */
+    function getEntryInfo(string _entryID)
       constant
-    returns (uint256 votes)
+      external
+    returns (string name, address creator, uint256 votes)
     {
-        return entries[_entryID].voteCount;
+        Entry memory info = entries[_entryID];
+        name = info.nameOfEntry;
+        creator = info.creatorAddress;
+        votes = info.voteCount;
     }
-
+    
 /** ***************************** INTERNAL ******************************** **/
     
+    /* All this does is find the OC with the most votes. */
     function findWinner()
       internal
     returns (bool success)
     {
         uint256 mostVotes;                      // Most votes is whichever entry being checked is currently winning
-        string currentWinner;                   // Keep track of whoever currently has bribed me the most
+        string currentWinner;                   // Loop will choose current winner based on bribery
         for (uint256 i = 0; i < proposalsToday; i++) {
             uint256 ocVotes = entries[entryIDs[i]].voteCount;
             if (ocVotes >= mostVotes) {
@@ -124,12 +129,12 @@ contract GoatseDapp {
                 currentWinner = entryIDs[i];
             }
         }
-	pastWinners[currentPeriod] = entries[currentWinner];
+        pastWinners[currentPeriod] = entries[currentWinner];
         assert(goatseCoin.worksIfYoureHot(entries[currentWinner].creatorAddress, 50000 * 1 ether));
         assert(goatseCoin.worksIfYoureHot(msg.sender, 1000 * 1 ether));
         success = true;
     }
-    
+
     /* Delete OC Entry struct at the end of the day */
     function clearAll()
       internal
@@ -147,7 +152,7 @@ contract GoatseDapp {
     /* Can only vote through the token */
     modifier onlyToken() 
     {
-        require(msg.sender == gcAddress);
+        require(msg.sender == address(goatseCoin));
         _;
     }
 
