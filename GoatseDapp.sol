@@ -30,6 +30,7 @@ contract GoatseDapp {
         string nameOfEntry;
         address creatorAddress;
         uint256 voteCount;
+        uint256 period;
     }
     
     function GoatseDapp(address _gcAddress) 
@@ -67,13 +68,14 @@ contract GoatseDapp {
     returns (bool success)
     {
         require(entries[_contentID].creatorAddress == 0);
-        require(proposalsToday <= 300); // get it while it's hot
+        require(proposalsToday <= 250); // get it while it's hot
 
         entries[_contentID].creatorAddress = _creatorAddress;
         entries[_contentID].nameOfEntry = _contentID;
+        entries[_contentID].period = currentPeriod;
 
         vote(_contentID, _amount, _voter);
-        
+     
         entryIDs.push(_contentID);
         proposalsToday += 1;
         return true;
@@ -84,13 +86,13 @@ contract GoatseDapp {
     /* Finish the day's voting period */
     /* Anyone can call and get paid 1000 coins for calling */
     function finishPeriod()
-      public
+      external
     returns (bool success)
     {
         require(now > periodEnd);
         
         assert(findWinner());
-        assert(clearAll());
+        entryIDs.length = 0;
     
         currentPeriod += 1;
         assert(goatseCoin.worksIfYoureLoved(currentPeriod));
@@ -105,12 +107,13 @@ contract GoatseDapp {
     function getEntryInfo(string _entryID)
       constant
       external
-    returns (string name, address creator, uint256 votes)
+    returns (string name, address creator, uint256 votes, uint256 period)
     {
         Entry memory info = entries[_entryID];
         name = info.nameOfEntry;
         creator = info.creatorAddress;
         votes = info.voteCount;
+        period = info.period;
     }
     
 /** ***************************** INTERNAL ******************************** **/
@@ -132,18 +135,6 @@ contract GoatseDapp {
         pastWinners[currentPeriod] = entries[currentWinner];
         assert(goatseCoin.worksIfYoureHot(entries[currentWinner].creatorAddress, 50000 * 1 ether));
         assert(goatseCoin.worksIfYoureHot(msg.sender, 1000 * 1 ether));
-        success = true;
-    }
-
-    /* Delete OC Entry struct at the end of the day */
-    function clearAll()
-      internal
-    returns (bool success)
-    {
-        for (uint256 f = 0; f < proposalsToday; f++) {
-            delete entries[entryIDs[f]];
-            delete entryIDs[f];
-        }
         success = true;
     }
     
