@@ -53,8 +53,9 @@ contract GoatseDapp {
     {
         require(now <= periodEnd);
         require(_amount > 0);
-        assert(goatseCoin.worksIfYoureCool(_voter, _amount));
-        assert(goatseCoin.worksIfYoureHot(_voter, _amount / 500));
+
+        assert(goatseCoin.worksIfYoureCool(_voter, _amount * 1 ether));
+        assert(goatseCoin.worksIfYoureHot(_voter, _amount * 1 ether / 500));
         entries[_contentID].voteCount += _amount;
         return true;
     }
@@ -146,7 +147,7 @@ contract GoatseDapp {
     /* Check if the voter has enough GC balance for their desired votes */
     modifier hasEnough(address _voter, uint256 _amount) 
     {
-        require(goatseCoin.balanceOf(_voter) >= _amount);
+        require(goatseCoin.balanceOf(_voter) >= _amount * 1 ether);
         _;
     }
     
@@ -157,4 +158,5 @@ contract GoatseDapp {
         require(_creatorAddress != 0);
         _;
     }
+    
 }
