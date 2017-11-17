@@ -9,8 +9,7 @@ import "./GoatseCoin.sol";
 /**
   * Goatse Dapp allows users to vote on their favorite memes through
   * the Goatse Coin contract. Memes are proposed, voted on, then the
-  * meme with the most wins and 10 random voters get rewarded. The
-  * process restarts every 24 hours.
+  * meme with the most votes wins. The process restarts every 24 hours.
 **/
 
 /* Voting contract for the best OC created today */
@@ -70,11 +69,8 @@ contract GoatseDapp {
         require(entries[_contentID].creatorAddress == 0);
         require(proposalsToday <= 250); // get it while it's hot
 
-        entries[_contentID].creatorAddress = _creatorAddress;
-        entries[_contentID].nameOfEntry = _contentID;
-        entries[_contentID].period = currentPeriod;
-
-        vote(_contentID, _amount, _voter);
+        entries[_contentID] = Entry(_contentID, _creatorAddress, _amount, currentPeriod);
+        assert(vote(_contentID, _amount, _voter));
      
         entryIDs.push(_contentID);
         proposalsToday += 1;
